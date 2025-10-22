@@ -1,0 +1,29 @@
+#include <iostream>
+using namespace std;
+
+int main() {
+
+    setlocale(0, "");
+    int num, answer;
+
+    cout << " Введите число : ";
+    cin >> num;
+
+    for (int i = 1; i <= 9; ++i) {
+        cout << " Решите пример: " << num << " * " << i << endl;
+
+        cout << " Ответ: ";
+        cin >> answer;
+
+        if (answer == num * i) {
+            cout << " Пример решен правильно!" << endl;
+        }
+        else {
+            cout << " Ошибка, пример решен неверно! Правильный ответ: " << num * i << endl;
+            return 0;  
+        }
+    }
+
+    cout << " Примеры решены, поздравляем!" << endl;
+    return 0;
+}
