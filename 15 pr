@@ -1,0 +1,73 @@
+#include <iostream>
+#include <cstdlib> 
+
+using namespace std;
+
+void clearConsole() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+int main() {
+    setlocale(0, "");
+    int height, type;
+    char texture;
+
+    cout << "[ + ] Фигура: \"Треугольник\"\n";
+
+    cout << "[ 1 ] Заполненный\n";
+    cout << "[ 2 ] Пустой\n";
+    cout << "[ + ] Выберите тип: ";
+    cin >> type;
+
+    if (type != 1 && type != 2) {
+        cout << "Ошибка: неверный тип.\n";
+        return 1;
+    }
+
+    cout << "[ + ] Размер (высота): \t";
+    cin >> height;
+
+    if (height <= 0) {
+        cout << "Ошибка: высота должна быть положительным числом.\n";
+        return 1;
+    }
+
+    cout << "[ + ] Текстура: \t";
+    cin >> texture;
+
+    clearConsole();
+
+    cout << "[ + ] Фигура: \"Треугольник\"\n";
+    cout << "[ + ] Результат:\n\n";
+
+    
+    for (int i = 1; i <= height; ++i) {
+        int spaces = height - i; 
+        for (int j = 0; j < spaces; ++j) {
+            cout << ".\t"; 
+        }
+
+        if (type == 1) {
+            
+            for (int j = 0; j < 2 * i - 1; ++j) {
+                cout << texture << "\t";
+            }
+        }
+        else {
+            
+            for (int j = 1; j <= 2 * i - 1; ++j) {
+                if (j == 1 || j == 2 * i - 1 || i == height)
+                    cout << texture << "\t"; 
+                else
+                    cout << ".\t"; 
+            }
+        }
+        cout << "\n";
+    }
+
+    return 0;
+}
