@@ -1,0 +1,54 @@
+#include <iostream>
+#include <cstdlib> 
+
+using namespace std;
+
+void clearConsole() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+int main() {
+    setlocale(0, "");
+    int size;
+    char texture;
+
+    cout << "[ + ] Фигура: \"Решетка\"\n";
+    cout << "[ + ] Размер: \t";
+    cin >> size;
+
+    if (size <= 0) {
+        cout << "Ошибка: размер должен быть положительным числом.\n";
+        return 1;
+    }
+
+    cout << "[ + ] Текстура: \t";
+    cin >> texture;
+
+    clearConsole();
+
+    cout << "[ + ] Фигура: \"Решетка\"\n";
+    cout << "[ + ] Результат:\n\n";
+
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            if (i % 2 == 0) {
+                
+                if (j % 2 == 0)
+                    cout << ".\t";
+                else
+                    cout << texture << "\t";
+            }
+            else {
+                
+                cout << texture << "\t";
+            }
+        }
+        cout << "\n";
+    }
+
+    return 0;
+}
