@@ -1,0 +1,68 @@
+#include <iostream>
+#include <cstdlib> 
+
+using namespace std;
+
+void clearConsole() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+int main() {
+    setlocale(0, "");
+    int width, height, type;
+    char texture;
+
+    cout << "[ + ] Фигура: \"Прямоугольник\"\n";
+
+    cout << "[ 1 ] Заполненный\n";
+    cout << "[ 2 ] Пустой\n";
+    cout << "[ + ] Выберите тип: ";
+    cin >> type;
+
+    if (type != 1 && type != 2) {
+        cout << "Ошибка: неверный тип.\n";
+        return 1;
+    }
+
+    cout << "[ + ] Ширина: \t";
+    cin >> width;
+
+    cout << "[ + ] Высота: \t";
+    cin >> height;
+
+    cout << "[ + ] Текстура: \t";
+    cin >> texture;
+
+    if (width <= 0 || height <= 0) {
+        cout << "Ошибка: ширина и высота должны быть положительными числами.\n";
+        return 1;
+    }
+
+    clearConsole();
+
+    cout << "[ + ] Фигура: \"Прямоугольник\"\n";
+    cout << "[ + ] Результат:\n\n";
+
+    for (int h = 0; h < height; ++h) {
+        for (int w = 0; w < width; ++w) {
+            if (type == 1) {
+                
+                cout << texture << "\t";
+            }
+            else {
+                
+                if (h == 0 || h == height - 1 || w == 0 || w == width - 1)
+                    cout << texture << "\t"; 
+                else
+                    cout << ".\t"; 
+            }
+        }
+        cout << "\n";
+    }
+
+    return 0;
+}
