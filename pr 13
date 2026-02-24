@@ -1,0 +1,65 @@
+#include <iostream>
+#include <cstdlib> 
+
+using namespace std;
+
+void clearConsole() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+int main() {
+    setlocale(0, "");
+    int size, type;
+    char texture;
+
+    cout << "[ + ] Фигура: \"Квадрат\"\n";
+
+    cout << "[ 1 ] Заполненный\n";
+    cout << "[ 2 ] Пустой\n";
+    cout << "[ + ] Выберите тип: ";
+    cin >> type;
+
+    if (type != 1 && type != 2) {
+        cout << "Ошибка: неверный тип.\n";
+        return 1;
+    }
+
+    cout << "[ + ] Размер: ";
+    cin >> size;
+
+    if (size <= 0) {
+        cout << "Ошибка: размер должен быть положительным числом.\n";
+        return 1;
+    }
+
+    cout << "[ + ] Текстура: ";
+    cin >> texture;
+
+    clearConsole();
+
+    cout << "[ + ] Фигура: \"Квадрат\"\n";
+    cout << "[ + ] Результат:\n\n";
+
+    for (int i = 0; i < size; ++i) {
+        for (int j = 0; j < size; ++j) {
+            if (type == 1) {
+                
+                cout << texture << "\t";
+            }
+            else {
+                
+                if (i == 0 || i == size - 1 || j == 0 || j == size - 1)
+                    cout << texture << "\t";
+                else
+                    cout << ".\t";
+            }
+        }
+        cout << "\n";
+    }
+
+    return 0;
+}
