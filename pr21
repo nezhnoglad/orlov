@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <cstdlib>
+#endif
+
+void clearConsole() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+std::vector<std::string> generateRecursiveSquare(int size, char symbol) {
+    std::vector<std::string> result(size);
+    for (int i = 0; i < size; ++i) {
+        std::string line;
+        for (int j = 0; j < size; ++j) {
+            if (i == 0 || i == size - 1 || j == 0 || j == size - 1) {
+                line += symbol;
+            }
+            else {
+                
+                if ((i % 2 == 1 && j % 2 == 1) || (i % 2 == 0 && j % 2 == 0)) {
+                    line += symbol;
+                }
+                else {
+                    line += '.';
+                }
+            }
+            if (j != size - 1) line += ' ';
+        }
+        result[i] = line;
+    }
+    return result;
+}
+
+int main() {
+    setlocale(0, "");
+    int figureNumber = 10;
+    clearConsole();
+    std::cout << "[ + ] Фигура: \"Рекурсивный квадрат\"\n\n";
+
+    int size;
+    std::cout << "[ + ] Размер:\t";
+    std::cin >> size;
+
+    char texture;
+    std::cout << "[ + ] Текстура:\t";
+    std::cin >> texture;
+
+    std::cout << "\n[ + ] Результат:\n\n";
+
+    auto square = generateRecursiveSquare(size, texture);
+    for (const auto& line : square) {
+        std::cout << line << "\n";
+    }
+
+    return 0;
+}
