@@ -1,0 +1,73 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <cstdlib>
+#endif
+using namespace std;
+
+
+void clearConsole() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+
+std::vector<std::string> generateSnake(int size, char symbol) {
+    std::vector<std::string> result;
+    for (int row = 0; row < size; ++row) {
+        std::string line;
+        for (int col = 0; col < size; ++col) {
+            if ((row + col) % 2 == 0) {
+                line += symbol;
+                line += "     ";
+            }
+            else {
+                line += '.';
+                line += "      ";
+            }
+        }
+        
+        while (!line.empty() && line.back() == ' ') {
+            line.pop_back();
+        }
+        result.push_back(line);
+    }
+    return result;
+}
+
+int main() {
+    setlocale(0, "");
+    int figureNumber = 9; 
+
+    
+    clearConsole();
+
+    
+    std::cout << "[ + ] Фигура: \"Змейка\"\n\n";
+
+    
+    int size;
+    std::cout << "[ + ] Размер:\t";
+    std::cin >> size;
+
+    
+    char texture;
+    std::cout << "[ + ] Текстура:\t";
+    std::cin >> texture;
+
+    std::cout << "\n[ + ] Результат:\n\n";
+
+    
+    std::vector<std::string> snake = generateSnake(size, texture);
+    for (const auto& line : snake) {
+        std::cout << line << "\n";
+    }
+
+    return 0;
+}
