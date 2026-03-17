@@ -1,0 +1,95 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <cstdlib>
+#endif
+
+void clearConsole() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+
+std::vector<std::string> generateFourQuarters(int size, char texture, bool filled) {
+    std::vector<std::string> result(size);
+    for (int i = 0; i < size; ++i) {
+        std::string line;
+        for (int j = 0; j < size; ++j) {
+            
+            if (i < size / 2) {
+                if (j < size / 2) {
+                    
+                    if (filled || (i == 0 || j == 0 || i == size / 2 - 1 || j == size / 2 - 1))
+                        line += texture;
+                    else
+                        line += ' ';
+                }
+                else {
+                    
+                    if (filled || (i == 0 || j == size - 1 || i == size / 2 - 1 || j == size / 2))
+                        line += texture;
+                    else
+                        line += ' ';
+                }
+            }
+            
+            else {
+                if (j < size / 2) {
+                    
+                    if (filled || (i == size - 1 || j == 0 || i == size / 2 || j == size / 2 - 1))
+                        line += texture;
+                    else
+                        line += ' ';
+                }
+                else {
+                    
+                    if (filled || (i == size - 1 || j == size - 1 || i == size / 2 || j == size / 2))
+                        line += texture;
+                    else
+                        line += ' ';
+                }
+            }
+            if (j != size - 1) line += ' ';
+        }
+        result[i] = line;
+    }
+    return result;
+}
+
+int main() { 
+    setlocale(0, "");
+    int figureNumber = 12; 
+    clearConsole();
+    std::cout << "[ + ] Фигура: \"Четыре четверти\"\n\n";
+
+    int type;
+    std::cout << "[ 1 ] Заполненный\n";
+    std::cout << "[ 2 ] Пустой\n";
+    std::cout << "[ + ] Выберите тип: ";
+    std::cin >> type;
+
+    bool filled = (type == 1);
+
+    int size;
+    std::cout << "[ + ] Размер:\t";
+    std::cin >> size;
+
+    char texture;
+    std::cout << "[ + ] Текстура:\t";
+    std::cin >> texture;
+
+    std::cout << "\n[ + ] Результат:\n\n";
+
+    auto square = generateFourQuarters(size, texture, filled);
+    for (const auto& line : square) {
+        std::cout << line << "\n";
+    }
+
+    return 0;
+}
