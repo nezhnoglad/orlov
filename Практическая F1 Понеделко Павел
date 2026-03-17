@@ -1,0 +1,76 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <cstdlib>
+#endif
+
+void clearConsole() {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+std::vector<std::string> generateQuarterSquare(int size, char texture, bool filled) {
+    std::vector<std::string> result(size);
+    for (int i = 0; i < size; ++i) {
+        std::string line;
+        for (int j = 0; j < size; ++j) {
+            if (i + j >= size - 1) {
+                if (filled) {
+                    line += texture;
+                }
+                else {
+                    if (j == size - 1 || i == size - 1 || j == size - 1 - i) {
+                        line += texture;
+                    }
+                    else {
+                        line += ' ';
+                    }
+                }
+            }
+            else {
+                line += ' ';
+            }
+            if (j != size - 1) line += ' ';
+        }
+        result[i] = line;
+    }
+    return result;
+}
+
+int main() {
+    setlocale(0, "");
+    int figureNumber = 11;
+    clearConsole();
+    std::cout << "[ + ] Фигура: \"Четверть квадрата\"\n\n";
+
+    int type;
+    std::cout << "[ 1 ] Заполненный\n";
+    std::cout << "[ 2 ] Пустой\n";
+    std::cout << "[ + ] Выберите тип: ";
+    std::cin >> type;
+
+    bool filled = (type == 1);
+
+    int size;
+    std::cout << "[ + ] Размер:\t";
+    std::cin >> size;
+
+    char texture;
+    std::cout << "[ + ] Текстура:\t";
+    std::cin >> texture;
+
+    std::cout << "\n[ + ] Результат:\n\n";
+
+    auto square = generateQuarterSquare(size, texture, filled);
+    for (const auto& line : square) {
+        std::cout << line << "\n";
+    }
+
+    return 0;
+}
