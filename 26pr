@@ -1,0 +1,364 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <windows.h> 
+
+using namespace std;
+
+
+enum Color {
+    DEFAULT = 7,
+    RED = 12,
+    GREEN = 10,
+    BLUE = 9,
+    YELLOW = 14
+};
+
+
+struct Player {
+    string name;
+    char symbol;
+    Color color;
+};
+
+
+Player player1 = { "Player 1", 'X', GREEN };
+Player player2 = { "Player 2", 'O', RED };
+Player computer = { "Computer", 'O', BLUE };
+int wins1 = 0, losses1 = 0, draws1 = 0;
+int wins2 = 0, losses2 = 0, draws2 = 0;
+int computerWins = 0, computerLosses = 0, computerDraws = 0;
+Color currentTheme = DEFAULT;
+
+
+void setColor(Color color) {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
+}
+
+void resetColor() {
+    setColor(DEFAULT);
+}
+
+ 
+void showMenu() {
+    system("cls");
+    setColor(currentTheme);
+    cout << "=== КРЕСТИКИ-НОЛИКИ ===\n\n";
+    cout << "1. Начать игру\n";
+    cout << "2. Статистика\n";
+    cout << "3. Настройки\n";
+    cout << "4. Выйти\n";
+    resetColor();
+}
+
+
+void showStatistics() {
+    system("cls");
+    setColor(currentTheme);
+    cout << "=== СТАТИСТИКА ===\n\n";
+
+    double score1 = wins1 * 5 + draws1 * (-1.2) + losses1 * (-6);
+    double score2 = wins2 * 5 + draws2 * (-1.2) + losses2 * (-6);
+    double computerScore = computerWins * 5 + computerDraws * (-1.2) + computerLosses * (-6);
+
+    cout << player1.name << ":\n";
+    cout << "Победы: " << wins1 << "\n";
+    cout << "Поражения: " << losses1 << "\n";
+    cout << "Ничьи: " << draws1 << "\n";
+    cout << "Очки: " << score1 << "\n\n";
+
+    cout << player2.name << ":\n";
+    cout << "Победы: " << wins2 << "\n";
+    cout << "Поражения: " << losses2 << "\n";
+    cout << "Ничьи: " << draws2 << "\n";
+    cout << "Очки: " << score2 << "\n\n";
+
+    cout << computer.name << ":\n";
+    cout << "Победы: " << computerWins << "\n";
+    cout << "Поражения: " << computerLosses << "\n";
+    cout << "Ничьи: " << computerDraws << "\n";
+    cout << "Очки: " << computerScore << "\n\n";
+
+    cout << "Нажмите Enter для возврата в меню...";
+    resetColor();
+    cin.ignore();
+    cin.get();
+}
+
+
+void configurePlayers() {
+    int choice;
+    do {
+        system("cls");
+        setColor(currentTheme);
+        cout << "=== НАСТРОЙКИ ИГРОКОВ ===\n\n";
+        cout << "1. Настроить игрока 1\n";
+        cout << "2. Настроить игрока 2\n";
+        cout << "3. Настроить компьютер\n";
+        cout << "4. Назад\n";
+        resetColor();
+
+        cout << "Выберите пункт: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Введите имя игрока 1: ";
+            cin >> player1.name;
+            cout << "Введите символ игрока 1: ";
+            cin >> player1.symbol;
+            cout << "Выберите цвет (1-красный, 2-зеленый, 3-синий, 4-желтый): ";
+            int colorChoice;
+            cin >> colorChoice;
+            player1.color = static_cast<Color>(colorChoice == 1 ? RED :
+                colorChoice == 2 ? GREEN :
+                colorChoice == 3 ? BLUE : YELLOW);
+            break;
+        case 2:
+            cout << "Введите имя игрока 2: ";
+            cin >> player2.name;
+            cout << "Введите символ игрока 2: ";
+            cin >> player2.symbol;
+            cout << "Выберите цвет (1-красный, 2-зеленый, 3-синий, 4-желтый): ";
+            cin >> colorChoice;
+            player2.color = static_cast<Color>(colorChoice == 1 ? RED :
+                colorChoice == 2 ? GREEN :
+                colorChoice == 3 ? BLUE : YELLOW);
+            break;
+        case 3:
+            cout << "Введите символ компьютера: ";
+            cin >> computer.symbol;
+            cout << "Выберите цвет (1-красный, 2-зеленый, 3-синий, 4-желтый): ";
+            cin >> colorChoice;
+            computer.color = static_cast<Color>(colorChoice == 1 ? RED :
+                colorChoice == 2 ? GREEN :
+                colorChoice == 3 ? BLUE : YELLOW);
+            break;
+        }
+    } while (choice != 4);
+}
+
+
+void configureTheme() {
+    int themeChoice;
+    system("cls");
+    setColor(currentTheme);
+    cout << "=== ВЫБОР ТЕМЫ ===\n\n";
+    cout << "1. Стандартная (белый текст)\n";
+    cout << "2. Тёмная (зелёный текст)\n";
+    cout << "3. Яркая (жёлтый текст)\n";
+    cout << "Выберите тему: ";
+    resetColor();
+    cin >> themeChoice;
+
+    switch (themeChoice) {
+    case 1: currentTheme = DEFAULT; break;
+    case 2: currentTheme = GREEN; break;
+    case 3: currentTheme = YELLOW; break;
+    }
+}
+
+
+void showSettings() {
+    int choice;
+    do {
+        system("cls");
+        setColor(currentTheme);
+        cout << "=== НАСТРОЙКИ ===\n\n";
+        cout << "1. Настройки игроков\n";
+        cout << "2. Тема интерфейса\n";
+        cout << "3. Назад\n";
+        resetColor();
+        cout << "Выберите пункт: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1: configurePlayers(); break;
+        case 2: configureTheme(); break;
+        }
+    } while (choice != 3);
+}
+
+
+bool checkWin(const vector<vector<char>>& board, char symbol) {
+
+    for (int i = 0; i < 3; i++) {
+        if (board[i][0] == symbol && board[i][1] == symbol && board[i][2] == symbol)
+            return true;
+    }
+
+    for (int j = 0; j < 3; j++) {
+        if (board[0][j] == symbol && board[1][j] == symbol && board[2][j] == symbol)
+            return true;
+    }
+
+    if (board[0][0] == symbol && board[1][1] == symbol && board[2][2] == symbol)
+        return true;
+    if (board[0][2] == symbol && board[1][1] == symbol && board[2][0] == symbol)
+        return true;
+
+    return false;
+}
+
+
+bool checkDraw(const vector<vector<char>>& board) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (board[i][j] == ' ')
+                return false;
+        }
+    }
+    return true;
+}
+
+
+void drawBoard(const vector<vector<char>>& board) {
+    system("cls");
+    setColor(currentTheme);
+    cout << "=== ИГРОВОЕ ПОЛЕ ===\n\n";
+    resetColor();
+
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            setColor(board[i][j] == player1.symbol ? player1.color :
+                board[i][j] == player2.symbol ? player2.color :
+                board[i][j] == computer.symbol ? computer.color : currentTheme);
+            cout << " " << board[i][j] << " ";
+            resetColor();
+            if (j < 2) cout << "|";
+        }
+        cout << "\n";
+        if (i < 2) {
+            cout << "-----------\n";
+        }
+    }
+    cout << "\n";
+}
+bool getPlayerMove(vector<vector<char>>& board, const Player& player) {
+    int row, col;
+    do {
+        cout << player.name << ", введите строку (1-3) и столбец (1-3): ";
+        cin >> row >> col;
+        row--; col--; 
+
+        if (row >= 0 && row < 3 && col >= 0 && col < 3 && board[row][col] == ' ') {
+            board[row][col] = player.symbol;
+            return true;
+        }
+        else {
+            cout << "Неверный ход! Попробуйте снова.\n";
+        }
+    } while (true);
+}
+void getComputerMove(vector<vector<char>>& board) {
+    
+    while (true) {
+        int row = rand() % 3;
+        int col = rand() % 3;
+        if (board[row][col] == ' ') {
+            board[row][col] = computer.symbol;
+            break;
+        }
+    }
+}
+void startGame() {
+    vector<vector<char>> board(3, vector<char>(3, ' '));
+    int gameMode;
+
+    cout << "Выберите режим:\n";
+    cout << "1. Одиночная игра (против компьютера)\n";
+    cout << "2. Два игрока\n";
+    cin >> gameMode;
+
+    bool gameOver = false;
+    Player* currentPlayer = &player1; 
+
+    while (!gameOver) {
+        drawBoard(board);
+
+        
+        if (currentPlayer == &computer) {
+            cout << "Ход компьютера...\n";
+            getComputerMove(board);
+        }
+        else {
+            getPlayerMove(board, *currentPlayer);
+        }
+
+        
+        if (checkWin(board, currentPlayer->symbol)) {
+            drawBoard(board);
+            cout << currentPlayer->name << " победил!\n";
+
+                        if (currentPlayer == &player1) {
+                wins1++;
+                if (gameMode == 1) losses2++;
+                else losses2++;
+            }
+            else if (currentPlayer == &player2) {
+                wins2++; losses1++;
+            }
+            else { 
+                computerWins++; losses1++;
+            }
+            gameOver = true;
+        }
+        else if (checkDraw(board)) {
+            drawBoard(board);
+            cout << "Ничья!\n";
+            draws1++; draws2++;
+            if (gameMode == 1) computerDraws++;
+            gameOver = true;
+        }
+
+        
+        if (!gameOver) {
+            if (gameMode == 2) {
+                
+                currentPlayer = (currentPlayer == &player1) ? &player2 : &player1;
+            }
+            else {
+                
+                currentPlayer = (currentPlayer == &player1) ? &computer : &player1;
+            }
+        }
+    }
+
+    cout << "Нажмите Enter для продолжения...";
+    cin.ignore();
+    cin.get();
+}
+
+
+int main() {
+    setlocale(0, "");
+    srand(time(0)); 
+
+    int choice;
+    do {
+        showMenu();
+        cout << "Выберите пункт: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            startGame();
+            break;
+        case 2:
+            showStatistics();
+            break;
+        case 3:
+            showSettings();
+            break;
+        case 4:
+            cout << "Выход из программы...\n";
+            break;
+        default:
+            cout << "Неверный выбор. Попробуйте снова.\n";
+            cin.ignore();
+            cin.get();
+        }
+    } while (choice != 4);
+
+    return 0;
+}
