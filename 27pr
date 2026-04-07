@@ -1,0 +1,108 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+
+void printNumberWithColor(int num) {
+    
+    if (num >= 0 && num <= 9) {
+        
+        cout << num;
+    }
+    else if (num >= 10 && num <= 19) {
+        system("color 2"); 
+        cout << num;
+        system("color 7"); 
+    }
+    else if (num >= 20 && num <= 29) {
+        system("color 1"); 
+        cout << num;
+        system("color 7");
+    }
+    else if (num >= 30 && num <= 39) {
+        system("color 4"); 
+        cout << num;
+        system("color 7");
+    }
+    else if (num >= 40 && num <= 49) {
+        system("color 6"); 
+        cout << num;
+        system("color 7");
+    }
+}
+
+int main() {
+    setlocale(0, "");
+    srand(time(0)); 
+
+    
+    const int ROWS = 3;
+    const int COLS = 4;
+
+    
+    vector<vector<int>> arr(ROWS, vector<int>(COLS));
+
+    
+    cout << "[ + ] Инициализированный массив:\n";
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            arr[i][j] = rand() % 50; 
+            printNumberWithColor(arr[i][j]);
+            cout << "\t";
+        }
+        cout << endl;
+    }
+
+    
+    cout << "\n[ + ] Сортировка:\n";
+    cout << "[ 1 ] По убыванию\n";
+    cout << "[ 2 ] По возрастанию\n";
+    cout << "[ + ] Ввод: ";
+
+    int choice;
+    cin >> choice;
+
+    
+    vector<int> flatArr;
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            flatArr.push_back(arr[i][j]);
+        }
+    }
+
+    
+    if (choice == 1) {
+        sort(flatArr.begin(), flatArr.end(), greater<int>());
+    }
+    else if (choice == 2) {
+        sort(flatArr.begin(), flatArr.end());
+    }
+    else {
+        cout << "Неверный выбор!\n";
+        return 1;
+    }
+
+    
+    int index = 0;
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            arr[i][j] = flatArr[index++];
+        }
+    }
+
+    
+    cout << "\n[ + ] Результат:\n";
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            printNumberWithColor(arr[i][j]);
+            cout << "\t";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
