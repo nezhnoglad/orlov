@@ -1,0 +1,117 @@
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+void printArray(int arr[], int size) {
+    for (int i = 0; i < size; i++) {
+        cout << "[ + ] Массив [" << i << "] | значение: " << arr[i] << endl;
+    }
+}
+
+void initializeArray(int arr[], int size) {
+    cout << "[ + ] Инициализация массива:" << endl;
+    for (int i = 0; i < size; i++) {
+        cout << "[ + ] Инициализация | ячейка " << i << ": ";
+        cin >> arr[i];
+    }
+}
+
+int main() {
+    setlocale(0, "");
+    const int SIZE = 7;
+    int arr[SIZE];
+
+    initializeArray(arr, SIZE);
+
+    int choice;
+    do {
+        cout << "\n[ + ] Настройки массива:\n";
+        cout << "[ 1 ] Сортировка по возрастанию\n";
+        cout << "[ 2 ] Сортировка по убыванию\n";
+        cout << "[ 3 ] Перемножить массив\n";
+        cout << "[ 4 ] Сложить массив\n";
+        cout << "[ 5 ] Разделить массив\n";
+        cout << "[ 6 ] Обнулить массив\n";
+        cout << "[ 9 ] Задать новые значения массиву\n";
+        cout << "[ + ] Ввод: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            sort(arr, arr + SIZE);
+            cout << "\n[ + ] Сортировка по возрастанию:" << endl;
+            printArray(arr, SIZE);
+            break;
+
+        case 2:
+            sort(arr, arr + SIZE, greater<int>());
+            cout << "\n[ + ] Сортировка по убыванию:" << endl;
+            printArray(arr, SIZE);
+            break;
+
+        case 3: {
+            int multiplier;
+            cout << "[ + ] Введите множитель: ";
+            cin >> multiplier;
+            for (int i = 0; i < SIZE; i++) {
+                arr[i] *= multiplier;
+            }
+            cout << "\n[ + ] Массив после умножения на " << multiplier << ":" << endl;
+            printArray(arr, SIZE);
+            break;
+        }
+
+        case 4: {
+            int addend;
+            cout << "[ + ] Введите число для сложения: ";
+            cin >> addend;
+            for (int i = 0; i < SIZE; i++) {
+                arr[i] += addend;
+            }
+            cout << "\n[ + ] Массив после сложения с " << addend << ":" << endl;
+            printArray(arr, SIZE);
+            break;
+        }
+
+        case 5: {
+            int divisor;
+            cout << "[ + ] Введите делитель: ";
+            cin >> divisor;
+            if (divisor != 0) {
+                for (int i = 0; i < SIZE; i++) {
+                    arr[i] /= divisor;
+                }
+                cout << "\n[ + ] Массив после деления на " << divisor << ":" << endl;
+            }
+            else {
+                cout << "\n[ ! ] Ошибка: деление на ноль невозможно!" << endl;
+            }
+            printArray(arr, SIZE);
+            break;
+        }
+
+        case 6:
+            for (int i = 0; i < SIZE; i++) {
+                arr[i] = 0;
+            }
+            cout << "\n[ + ] Массив обнулён:" << endl;
+            printArray(arr, SIZE);
+            break;
+
+        case 9:
+            initializeArray(arr, SIZE);
+            cout << "\n[ + ] Новый массив инициализирован:" << endl;
+            printArray(arr, SIZE);
+            break;
+
+        default:
+            if (choice != 0) {
+                cout << "[ ! ] Неверный выбор. Попробуйте снова." << endl;
+            }
+            break;
+        }
+    } while (choice != 0);
+
+    return 0;
+}
